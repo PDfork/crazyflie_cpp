@@ -850,6 +850,45 @@ struct crtpCommanderHighLevelDefineTrajectoryRequest
 } __attribute__((packed));
 CHECKSIZE(crtpCommanderHighLevelDefineTrajectoryRequest)
 
+/// Added by PatrickD ---------------------------------
+
+enum ObstacleType_e {
+  OBSTACLE_LINE = 0,
+  OBSTACLE_CIRCLE = 1,
+  // and more (Square, Ellipse, ...)
+};
+
+struct obstacleDescription
+{
+  uint8_t obstacleType; // LINE, CIRCLE, ...
+  union
+  {
+    struct {
+      uint32_t offset;  // offset in uploaded memory
+      uint8_t n_pieces;
+    } __attribute__((packed)) mem;
+  } trajectoryIdentifier;
+} __attribute__((packed));
+
+struct crtpCommanderHighLevelUploadObstacleRequest
+{
+  crtpCommanderHighLevelUploadObstacleRequest(
+    uint8_t obstacleId)
+    : header(0x08, 0)
+    , command(6)
+    , obstacleId(obstacleId)
+    {
+    }
+
+    const crtp header;
+    const uint8_t command;
+    uint8_t obstacleId;
+    struct obstacleDescription description;
+} __attribute__((packed));
+CHECKSIZE(crtpCommanderHighLevelUploadObstacleRequest)
+
+///------------------------------------------
+
 // Port 11 CrazySwarm Experimental
 
 typedef uint16_t fp16_t;
