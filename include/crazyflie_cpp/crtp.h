@@ -850,7 +850,13 @@ struct crtpCommanderHighLevelDefineTrajectoryRequest
 } __attribute__((packed));
 CHECKSIZE(crtpCommanderHighLevelDefineTrajectoryRequest)
 
-/// Added by PatrickD ---------------------------------
+/// begin: by PatrickD ---------------------------------------------------------
+
+enum ObstacleLocation_e {
+  OBSTACLE_STATIC = 0,
+  OBSTACLE_DYNAMIC = 1,
+  // and more (Square, Ellipse, ...)
+};
 
 enum ObstacleType_e {
   OBSTACLE_LINE = 0,
@@ -860,19 +866,20 @@ enum ObstacleType_e {
 
 struct obstacleDescription
 {
-  uint8_t obstacleType; // LINE, CIRCLE, ...
+  uint8_t obstacleLocation; // STATIC or DYNAMIC
+  uint8_t obstacleType; // NONE, LINE, CIRCLE, ...
   union
   {
     struct {
       uint32_t offset;  // offset in uploaded memory
       uint8_t n_pieces;
     } __attribute__((packed)) mem;
-  } trajectoryIdentifier;
+  } obstacleIdentifier;
 } __attribute__((packed));
 
-struct crtpCommanderHighLevelUploadObstacleRequest
+struct crtpCommanderHighLevelUpdateObstacleRequest
 {
-  crtpCommanderHighLevelUploadObstacleRequest(
+  crtpCommanderHighLevelUpdateObstacleRequest(
     uint8_t obstacleId)
     : header(0x08, 0)
     , command(6)
@@ -885,9 +892,9 @@ struct crtpCommanderHighLevelUploadObstacleRequest
     uint8_t obstacleId;
     struct obstacleDescription description;
 } __attribute__((packed));
-CHECKSIZE(crtpCommanderHighLevelUploadObstacleRequest)
+CHECKSIZE(crtpCommanderHighLevelUpdateObstacleRequest)
 
-///------------------------------------------
+/// end: by PatrickD -----------------------------------------------------------
 
 // Port 11 CrazySwarm Experimental
 

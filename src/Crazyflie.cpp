@@ -1127,8 +1127,9 @@ void Crazyflie::uploadTrajectory(
   throw std::runtime_error("Could not find MemoryTypeTRAJ!");
 }
 
-void Crazyflie::uploadObstacle( // added by PatrickD
+void Crazyflie::updateObstacle( // by PatrickD
   uint8_t obstacleId,
+  uint8_t obstacleType,
   uint32_t pieceOffset,
   const std::vector<float>& pieces)
 {
@@ -1146,11 +1147,10 @@ void Crazyflie::uploadObstacle( // added by PatrickD
         addRequest(reinterpret_cast<const uint8_t*>(&req), 6 + size, 5);
       }
       // define trajectory
-      crtpCommanderHighLevelUploadObstacleRequest req(obstacleId);
-      req.description.trajectoryLocation = TRAJECTORY_LOCATION_MEM;
-      req.description.trajectoryType = TRAJECTORY_TYPE_POLY4D;
-      req.description.trajectoryIdentifier.mem.offset = pieceOffset * sizeof(float);
-      req.description.trajectoryIdentifier.mem.n_pieces = (uint8_t)pieces.size();
+      crtpCommanderHighLevelUpdateObstacleRequest req(obstacleId);
+      req.description.obstacleType = obstacleType;
+      req.description.obstacleIdentifier.mem.offset = pieceOffset * sizeof(float);
+      req.description.obstacleIdentifier.mem.n_pieces = (uint8_t)pieces.size();
       addRequest(req, 2);
       handleRequests();
       return;

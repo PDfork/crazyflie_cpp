@@ -298,6 +298,12 @@ public:
     bool relative = true,
     uint8_t groupMask = 0);
 
+  void updateObstacle( // by PatrickD
+    uint8_t obstacleId,
+    uint8_t obstacleType,
+    uint32_t pieceOffset,
+    const std::vector<float>& pieces);
+
 private:
   void sendPacket(
     const uint8_t* data,
