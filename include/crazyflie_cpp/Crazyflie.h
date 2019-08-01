@@ -89,6 +89,7 @@ public:
     MemoryTypeLED12   = 0x10,
     MemoryTypeLOCO    = 0x11,
     MemoryTypeTRAJ    = 0x12,
+    MemoryTypeOBST    = 0x13,
   };
 
   struct MemoryTocEntry {

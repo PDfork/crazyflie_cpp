@@ -1130,11 +1130,12 @@ void Crazyflie::uploadTrajectory(
 void Crazyflie::updateObstacle( // by PatrickD
   uint8_t obstacleId,
   uint8_t obstacleType,
+  uint8_t obstacleLocation,
   uint32_t pieceOffset,
   const std::vector<float>& pieces)
 {
   for (const auto& entry : m_memoryTocEntries) {
-    if (entry.type == MemoryTypeTRAJ) {
+    if (entry.type == MemoryTypeOBST) {
       startBatchRequest();
       // upload pieces
       size_t remainingBytes = sizeof(float) * pieces.size();
